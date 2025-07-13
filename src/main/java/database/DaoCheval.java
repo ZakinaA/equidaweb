@@ -86,30 +86,38 @@ public class DaoCheval {
      * @return boolean true si l'ajout a réussi, false sinon
      */
     public static boolean ajouterCheval(Connection cnx, Cheval cheval) {
-        try {
-            requeteSql = cnx.prepareStatement(
-                "INSERT INTO cheval (nom, race_id) VALUES (?, ?)",
-                PreparedStatement.RETURN_GENERATED_KEYS
-            );
-            requeteSql.setString(1, cheval.getNom());
-            requeteSql.setInt(2, cheval.getRace().getId());
-            
-            int result = requeteSql.executeUpdate();
-            
-            if (result == 1) {
-                // Récupération de l'id auto-généré
-                ResultSet rs = requeteSql.getGeneratedKeys();
-                if (rs.next()) {
-                    cheval.setId(rs.getInt(1));
-                }
-                return true;
-            }
-            return false;
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de l'ajout du cheval");
-            return false;
+    try {
+        requeteSql = cnx.prepareStatement(
+            "INSERT INTO cheval (nom, date_naissance, race_id) VALUES (?, ?, ?)",
+            PreparedStatement.RETURN_GENERATED_KEYS
+        );
+        requeteSql.setString(1, cheval.getNom());
+        
+        // Gestion de la date de naissance
+        if (cheval.getDateNaissance() != null) {
+            requeteSql.setDate(2, java.sql.Date.valueOf(cheval.getDateNaissance()));
+        } else {
+            requeteSql.setNull(2, java.sql.Types.DATE);
         }
+        
+        requeteSql.setInt(3, cheval.getRace().getId());
+        
+        int result = requeteSql.executeUpdate();
+        
+        if (result == 1) {
+            // Récupération de l'id auto-généré
+            ResultSet rs = requeteSql.getGeneratedKeys();
+            if (rs.next()) {
+                cheval.setId(rs.getInt(1));
+            }
+            return true;
+        }
+        return false;
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("Erreur lors de l'ajout du cheval");
+        return false;
     }
+}
 }
