@@ -19,6 +19,7 @@ public class ChevalServlet extends HttpServlet {
     private String message;
     Connection cnx ;
 
+    
     public void init() {
         ServletContext servletContext=getServletContext();
 
@@ -40,9 +41,31 @@ public class ChevalServlet extends HttpServlet {
         {
             ArrayList<Cheval> lesChevaux = DaoCheval.getLesChevaux(cnx);
             request.setAttribute("pLesChevaux", lesChevaux);
-            //System.out.println("lister eleves -    nombres d'élèves récupérés" + lesEleves.size() );
+
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/cheval/list.jsp").forward(request, response);
         }
+        else if ("/show".equals(path)) {
+            try {
+                int idCheval = Integer.parseInt(request.getParameter("idCheval"));
+                Cheval leCheval = DaoCheval.getLeCheval(cnx, idCheval);
+
+                if (leCheval != null) {
+                    request.setAttribute("pLeCheval", leCheval);
+                    this.getServletContext().getRequestDispatcher("/WEB-INF/views/cheval/show.jsp").forward(request, response);
+                } else {
+                    // Redirection vers une page d'erreur ou la liste si le cheval n'existe pas
+                    response.sendRedirect(request.getContextPath() + "/cheval-servlet/lister");
+                }
+            } catch (NumberFormatException e) {
+                // Gestion de l'erreur si l'id n'est pas un nombre valide
+                System.out.println("Erreur : l'id du cheval n'est pas un nombre valide");
+                response.sendRedirect(request.getContextPath() + "/cheval-servlet/lister");
+            }
+        }
+
+
+
+
     }
 
     public void destroy() {
