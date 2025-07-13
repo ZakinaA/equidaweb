@@ -79,4 +79,37 @@ public class DaoCheval {
         }
         return cheval;
     }
+    /**
+     * Ajoute un nouveau cheval dans la base de données
+     * @param cnx La connexion active à la base de données
+     * @param cheval Le cheval à ajouter
+     * @return boolean true si l'ajout a réussi, false sinon
+     */
+    public static boolean ajouterCheval(Connection cnx, Cheval cheval) {
+        try {
+            requeteSql = cnx.prepareStatement(
+                "INSERT INTO cheval (nom, race_id) VALUES (?, ?)",
+                PreparedStatement.RETURN_GENERATED_KEYS
+            );
+            requeteSql.setString(1, cheval.getNom());
+            requeteSql.setInt(2, cheval.getRace().getId());
+            
+            int result = requeteSql.executeUpdate();
+            
+            if (result == 1) {
+                // Récupération de l'id auto-généré
+                ResultSet rs = requeteSql.getGeneratedKeys();
+                if (rs.next()) {
+                    cheval.setId(rs.getInt(1));
+                }
+                return true;
+            }
+            return false;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de l'ajout du cheval");
+            return false;
+        }
+    }
 }
