@@ -8,11 +8,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import database.DaoCheval;
+import database.DaoRace;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.Cheval;
+import model.Race;
 
 @WebServlet(name = "chevalServlet", value = "/cheval-servlet/*")
 public class ChevalServlet extends HttpServlet {
@@ -38,7 +40,7 @@ public class ChevalServlet extends HttpServlet {
             request.setAttribute("pLesChevaux", lesChevaux);
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/cheval/list.jsp").forward(request, response);
         }
-        else if ("/show".equals(path)) {
+        if ("/show".equals(path)) {
             try {
                 int idCheval = Integer.parseInt(request.getParameter("idCheval"));
                 Cheval leCheval = DaoCheval.getLeCheval(cnx, idCheval);
@@ -53,7 +55,16 @@ public class ChevalServlet extends HttpServlet {
                 System.out.println("Erreur : l'id du cheval n'est pas un nombre valide");
                 response.sendRedirect(request.getContextPath() + "/cheval-servlet/lister");
             }
+
         }
+
+        if ("/add".equals(path)) {
+            ArrayList<Race> lesRaces = DaoRace.getLesRaces(cnx);
+            request.setAttribute("pLesRaces", lesRaces);
+            this.getServletContext().getRequestDispatcher("/WEB-INF/views/cheval/add.jsp").forward(request, response);
+        }
+
+
     }
 
     public void destroy() {
