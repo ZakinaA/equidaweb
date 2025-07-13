@@ -19,6 +19,12 @@
             .special { 
                 padding-top: 50px; 
             }
+            .header-actions {
+                margin-bottom: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
         </style>
     </head>
     <body>
@@ -33,7 +39,13 @@
         </nav>
 
         <div class="container special">
-            <h2 class="h2">Liste des chevaux</h2>
+            <div class="header-actions">
+                <h2 class="h2">Liste des chevaux</h2>
+                <a href="<%= request.getContextPath() %>/cheval-servlet/add" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus"></span> Ajouter un cheval
+                </a>
+            </div>
+            
             <div class="table-responsive">
                 <% ArrayList<Cheval> lesChevaux = (ArrayList)request.getAttribute("pLesChevaux"); %>
                 <table class="table table-striped table-sm">
@@ -56,5 +68,8 @@
                 </table>
             </div>
         </div>
+        
+        <!-- Bootstrap JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
 </html>
