@@ -1,41 +1,59 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="model.Cheval" %>
 <%@ page import="model.Race" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Détails du Cheval</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Equida</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <style>
+        body { padding-top: 50px; }
+        .special { padding-top: 50px; }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1>Détails du Cheval</h1>
-        
-        <% Cheval leCheval = (Cheval)request.getAttribute("pLeCheval"); %>
-        
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title"><%=leCheval.getNom()%></h5>
-                <div class="card-text">
-                    <p><strong>ID :</strong> <%=leCheval.getId()%></p>
-                    
-                    <% if(leCheval.getDateNaissance() != null) { %>
-                        <p><strong>Date de naissance :</strong> <%=leCheval.getDateNaissance()%></p>
-                    <% } %>
-                    
-                    <% if(leCheval.getRace() != null) { %>
-                        <p><strong>Race :</strong> <%=leCheval.getRace().getNom()%></p>
-                    <% } %>
-                </div>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href='../ServletCheval/list' class="navbar-brand">Système de gestion des ventes aux enchères de chevaux</a>
             </div>
         </div>
-
-        <div class="mt-3">
-            <a href="<%=request.getContextPath()%>/cheval-servlet/lister" class="btn btn-primary">
-                Retour à la liste
-            </a>
+    </nav>
+    <div class="container special">
+        <h2 class="h2">Liste des chevaux</h2>
+        <div class="table-responsive">
+            <% Cheval leCheval = (Cheval)request.getAttribute("pLeCheval"); %>
+            <table class="table table-striped table-sm">
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <td><%= leCheval.getId() %></td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td><%= leCheval.getNom() %></td>
+                    </tr>
+                    <% if(leCheval.getDateNaissance() != null) { %>
+                    <tr>
+                        <th>Date de naissance</th>
+                        <td><%= leCheval.getDateNaissance() %></td>
+                    </tr>
+                    <% } %>
+                    <% if(leCheval.getRace() != null) { %>
+                    <tr>
+                        <th>Race</th>
+                        <td><%= leCheval.getRace().getNom() %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group">
+            <a href="<%= request.getContextPath() %>/cheval-servlet/list" class="btn btn-primary">Retour à la liste</a>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
