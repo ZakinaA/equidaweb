@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>JSP - Hello World</title>
+  <title>Equida Web</title>
 </head>
 <body>
-<h1><%= "Hello World!" %></h1>
+<h1><%= "Equida Web" %></h1>
 <br/>
-<a href="hello-servlet">Hello Servlet</a>
+<a href="/equidaweb/cheval-servlet/list">Liste des chevaux</a>
 </body>
 </html>
